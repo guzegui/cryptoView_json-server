@@ -11,58 +11,6 @@
           "litecoin": 10,
           "dogecoin": 10
         }
-      },
-      {
-        "id": "c694",
-        "username": "example1",
-        "email": "example1@example.com",
-        "password": "exampl!33",
-        "balance": {
-          "dollars": 100000000,
-          "bitcoin": 10,
-          "ethereum": 10,
-          "litecoin": 10,
-          "dogecoin": 10
-        }
-      },
-      {
-        "id": "bcb8",
-        "username": "example1!",
-        "email": "example@example.com",
-        "password": "example1!",
-        "balance": {
-          "dollars": 100000000,
-          "bitcoin": 10,
-          "ethereum": 10,
-          "litecoin": 10,
-          "dogecoin": 10
-        }
-      },
-      {
-        "id": "48b1",
-        "username": "example1!",
-        "email": "example@gmail.com",
-        "password": "example1!",
-        "balance": {
-          "dollars": 100000000,
-          "bitcoin": 10,
-          "ethereum": 10,
-          "litecoin": 10,
-          "dogecoin": 10
-        }
-      },
-      {
-        "id": "1669",
-        "username": "example1!",
-        "email": "example@example.com",
-        "password": "example1!",
-        "balance": {
-          "dollars": 100000000,
-          "bitcoin": 10,
-          "ethereum": 10,
-          "litecoin": 10,
-          "dogecoin": 10
-        }
       }
     ]
   }
