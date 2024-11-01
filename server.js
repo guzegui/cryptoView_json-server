@@ -2,8 +2,7 @@ const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
 const dotenv = require("dotenv");
 const axios = require("axios");
-const cors = require('cors'); // Import cors
-
+const cors = require("cors"); // Import cors
 
 dotenv.config();
 
@@ -115,8 +114,5 @@ app.delete("/api/users/:userID", async (req, res) => {
   }
 });
 
-// Start the Express server for local development
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running locally on http://localhost:${PORT}`);
-});
+// export the app for vercel serverless functions
+module.exports = app;
