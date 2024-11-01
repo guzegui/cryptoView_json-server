@@ -45,28 +45,29 @@ app.get("/api/news", async (req, res) => {
 
 // CRUD Operations for Users Collection
 
-// GET all users or a specific user by ID (handleLogin)
-app.get("/api/users/:userID?", async (req, res) => {
+// Route to GET all users
+app.get("/api/users", async (req, res) => {
+  const collection = await connectToDB();
+
+  try {
+    const users = await collection.find().toArray();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to GET a specific user by ID
+app.get("/api/users/:userID", async (req, res) => {
   const { userID } = req.params;
   const collection = await connectToDB();
 
-  if (userID) {
-    // Retrieve specific user by ID
-    try {
-      const user = await collection.findOne({ _id: new ObjectId(userID) });
-      if (!user) return res.status(404).json({ error: "User not found" });
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  } else {
-    // Retrieve all users
-    try {
-      const users = await collection.find().toArray();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  try {
+    const user = await collection.findOne({ _id: new ObjectId(userID) });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
