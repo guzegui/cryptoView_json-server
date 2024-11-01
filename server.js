@@ -16,8 +16,14 @@ let db;
 // Connect to MongoDB and access the `cryptoView` database and `users` collection
 async function connectToDB() {
   if (!db) {
-    await client.connect();
-    db = client.db("cryptoView");
+    try {
+      await client.connect();
+      db = client.db("cryptoView"); // Connect to the `cryptoView` database
+      console.log("Connected to MongoDB"); 
+    } catch (error) {
+      console.error("Failed to connect to MongoDB:", error); 
+      throw new Error("Database connection error");
+    }
   }
   return db.collection("users");
 }
