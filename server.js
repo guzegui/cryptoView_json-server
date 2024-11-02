@@ -7,7 +7,6 @@ const cors = require("cors"); // Import cors
 dotenv.config();
 
 const app = express();
-app.use(cors());
 
 const client = new MongoClient(process.env.MONGO_URI);
 
@@ -19,9 +18,9 @@ async function connectToDB() {
     try {
       await client.connect();
       db = client.db("cryptoView"); // Connect to the `cryptoView` database
-      console.log("Connected to MongoDB"); 
+      console.log("Connected to MongoDB");
     } catch (error) {
-      console.error("Failed to connect to MongoDB:", error); 
+      console.error("Failed to connect to MongoDB:", error);
       throw new Error("Database connection error");
     }
   }
@@ -31,7 +30,7 @@ async function connectToDB() {
 // Proxy Route for CoinCap API (prices)
 app.get("/api/prices", async (req, res) => {
   try {
-    const response = await axios.get(process.env.NEWS_API);
+    const response = await axios.get(process.env.CRYPTO_API);
     res.status(200).json(response.data);
   } catch (error) {
     res.status(500).json({ error: "Error fetching prices from CoinCap" });
@@ -41,7 +40,7 @@ app.get("/api/prices", async (req, res) => {
 // Proxy Route for CoinTelegraph RSS feed (news)
 app.get("/api/news", async (req, res) => {
   try {
-    const response = await axios.get(process.env.CRYPTO_API);
+    const response = await axios.get(process.env.NEWS_API);
     res.set("Content-Type", "application/rss+xml");
     res.status(200).send(response.data);
   } catch (error) {
@@ -93,10 +92,14 @@ app.post("/api/users/signup", async (req, res) => {
 app.put("/api/users/:userID", async (req, res) => {
   const { userID } = req.params;
   const collection = await connectToDB();
+
+  // Extract _id from the req.body
+  const { _id, ...userWithNoID } = req.body;
+
   try {
     const result = await collection.updateOne(
       { _id: new ObjectId(userID) },
-      { $set: req.body }
+      { $set: userWithNoID }
     );
     if (result.matchedCount === 0)
       return res.status(404).json({ error: "User not found" });
@@ -123,3 +126,28 @@ app.delete("/api/users/:userID", async (req, res) => {
 
 // export the app for vercel serverless functions
 module.exports = app;
+
+/*
+
+ _     ____  ____   ____   _     _   _  ____   ____  _____ 
+| |__ / () \/ (__` / () \ | |__ | |_| |/ () \ (_ (_`|_   _|
+|____|\____/\____)/__/\__\|____||_| |_|\____/.__)__)  |_|  
+  ____  ____ _____ __  __ ____ _____                       
+ (_ (_`| ===|| () )\ \/ /| ===|| () )                      
+.__)__)|____||_|\_\ \__/ |____||_|\_\                      
+ ____  ____  __  _  ____  _  ____                          
+/ (__`/ () \|  \| || ===|| |/ (_,`                         
+\____)\____/|_|\__||__|  |_|\____)                         
+
+
+app.use(cors());
+app.use(express.json()); // Middleware to parse JSON request bodies
+
+// Start the server on a specified port for local development
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+*/
