@@ -8,11 +8,17 @@ dotenv.config();
 
 const app = express();
 
+// Allow CORS for the Netlify domain and handle preflight for all methods and headers
 app.use(
   cors({
     origin: "https://thecryptoview.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+app.options("*", cors()); // Preflight for all routes
+
+app.use(express.json()); // Parse JSON request bodies
 
 const client = new MongoClient(process.env.MONGO_URI);
 
