@@ -8,6 +8,12 @@ dotenv.config();
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "https://thecryptoview.netlify.app",
+  })
+);
+
 const client = new MongoClient(process.env.MONGO_URI);
 
 let db;
